@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microservice-2
+  template:
+    metadata:
+      labels:
+        app: microservice-2
+    spec:
+      containers:
+        - name: my-container
+          image: ematos/bypass
+          imagePullPolicy: Always
+          env:
+            - name: RABBITMQ_SOURCE_QUEUE_NAME
+              value: queue-2
+            - name: RABBITMQ_DESTINATION_QUEUE_NAME
+              value: queue-3
+            - name: RABBITMQ_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: my-rabbitmq-secret
+                  key: host
+            - name: RABBITMQ_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: my-rabbitmq-secret
+                  key: port
+            - name: RABBITMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: my-rabbitmq-secret
+                  key: user
+            - name: RABBITMQ_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: my-rabbitmq-secret
+                  key: password
+            - name: APP_MIN_DURATION_IN_MILLISECONDS
+              value: "100"
+            - name: APP_MAX_DURATION_IN_MILLISECONDS
+              value: "700"
+            - name: APP_ERROR_RATE
+              value: "0.4"
+

@@ -1,0 +1,52 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: microservice-publisher
+spec:
+  schedule: "* * * * *" # every minute
+  concurrencyPolicy: Forbid
+  suspend: false
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: publisher
+            image: ematos/publisher
+            imagePullPolicy: Always
+            env:
+              - name: RABBITMQ_DESTINATION_QUEUE_NAME
+                value: "queue-1"
+              - name: RABBITMQ_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: my-rabbitmq-secret
+                    key: host
+              - name: RABBITMQ_PORT
+                valueFrom:
+                  secretKeyRef:
+                    name: my-rabbitmq-secret
+                    key: port
+              - name: RABBITMQ_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: my-rabbitmq-secret
+                    key: user
+              - name: RABBITMQ_PASS
+                valueFrom:
+                  secretKeyRef:
+                    name: my-rabbitmq-secret
+                    key: password
+              - name: RABBITMQ_VHOST
+                valueFrom:
+                  secretKeyRef:
+                    name: my-rabbitmq-secret
+                    key: vhost
+              - name: APP_MIN_MSG_COUNT_TO_PUBLISH
+                value: "0"
+              - name: APP_MAX_MSG_COUNT_TO_PUBLISH
+                value: "100"
+

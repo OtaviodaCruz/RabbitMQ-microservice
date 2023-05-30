@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-persister
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microservice-persister
+  template:
+    metadata:
+      labels:
+        app: microservice-persister
+    spec:
+      containers:
+        - name: my-container
+          image: ematos/persister
+          imagePullPolicy: Always
+          env:
+            - name: RABBITMQ_SOURCE_QUEUE_NAME
+              value: queue-3
+            - name: RABBITMQ_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: my-rabbitmq-secret
+                  key: host
+            - name: RABBITMQ_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: my-rabbitmq-secret
+                  key: port
+            - name: RABBITMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: my-rabbitmq-secret
+                  key: user
+            - name: RABBITMQ_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: my-rabbitmq-secret
+                  key: password
+            - name: RABBITMQ_VHOST
+              valueFrom:
+                secretKeyRef:
+                  name: my-rabbitmq-secret
+                  key: vhost
+            - name: APP_CONCURRENCY
+              value: "1"
+            - name: APP_MIN_DURATION_IN_MILLISECONDS
+              value: "50"
+            - name: APP_MAX_DURATION_IN_MILLISECONDS
+              value: "800"
+            - name: APP_ERROR_RATE
+              value: "0.3"
+            - name: MONGODB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: my-mongo-secret
+                  key: url
+            - name: MONGODB_DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: my-mongo-secret
+                  key: db_name
+            - name: MONGODB_COLLECTION_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: my-mongo-secret
+                  key: collection_name
+
