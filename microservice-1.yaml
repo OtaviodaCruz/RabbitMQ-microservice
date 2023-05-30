@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: microservice-1
+  template:
+    metadata:
+      labels:
+        app: microservice-1
+    spec:
+      hostNetwork: true
+      containers:
+        - name: my-container
+          image: ematos/bypass
+          #ports:
+            #- containerPort: 5672
+            #- hostPort: 5672
+          imagePullPolicy: Always
+          env:
+            - name: RABBITMQ_SOURCE_QUEUE_NAME
+              value: queue-1
+            - name: RABBITMQ_DESTINATION_QUEUE_NAME
+              value: queue-2
+            - name: RABBITMQ_HOST
+              value: localhost
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: RABBITMQ_USER
+              value: guest
+            - name: RABBITMQ_PASS
+              value: guest
+            - name: APP_MIN_DURATION_IN_MILLISECONDS
+              value: "10"
+            - name: APP_MAX_DURATION_IN_MILLISECONDS
+              value: "1000"
+            - name: APP_ERROR_RATE
+              value: "0"
+      nodeName: lascar-670z5e
