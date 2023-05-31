@@ -32,6 +32,6 @@ Leia o README de cada projeto para entender melhor.
 
 - De modo geral, cada microsserviço age como um replicador da mensagem consumida, publicando em outra queue.
 
-## Problemas enfrentados
+## Problemas Enfrentados
 
 - Atualmente só funciona localmente. Por isso, a ```hostNetwork: true``` e ```nodeName: lascar-670z5e``` parecem ser necessárias.
