@@ -4,6 +4,14 @@
 
 - Imagem utilizada de [bypass](https://github.com/eduardo-matos/bypass)
 
+# Organização
+
+A pasta \bypass contém os arquivos para buildar a imagem utilizada. Esssa imagem contam uma aplicação em Ruby que é reponsável por ouvir uma queue ```RABBITMQ_SOURCE_QUEUE_NAME``` e publicar a mensagem recebida nessa queue em um queue ```RABBITMQ_DESTINATION_QUEUE_NAME```. 
+
+A pasta \tutorial-kubernetes-microservices contém os arquivos de configuração K8s para o Deployment de microsserviços.
+
+Leia o README de cada projeto para entender melhor.
+
 # Uso
 
 - Instale K3s versão v1.26.4 (8d0255af).
